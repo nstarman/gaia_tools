@@ -52,7 +52,7 @@ from astropy.table import Table, QTable
 from astropy import units as u
 
 # Custom Packages
-from . import query as Query
+from ._query import query as Query
 from . import cache as Cache
 from ..util.table_utils import add_units_to_Table
 
@@ -474,8 +474,6 @@ def make_query(WHERE=None, ORDERBY=None, FROM=None, random_index=None,
     else:
         raise ValueError('cache must be <str> or <bool>')
 
-
-
     # QUERY CONSTRUCTION
     query, udict = _make_query_SELECT(user_cols=user_cols, use_AS=use_AS,
                                       all_columns=all_columns,
@@ -532,11 +530,10 @@ def make_query(WHERE=None, ORDERBY=None, FROM=None, random_index=None,
 
     # Query
     if do_query is True:
-
-        print('\n\nstarting query @ {}'.format(time.strftime('m%md%dh%Hs%S')))
+        print('\n\nstarting query @ {}'.format(time.strftime('m%md%dh%Hm%Ms%S')))
         df = Query(query, local=local, timeit=timeit, use_cache=use_cache,
                    verbose=verbose, dbname=dbname, user=user)
-        print('query finished @ {}'.format(time.strftime('m%md%dh%Hs%S')))
+        print('query finished @ {}'.format(time.strftime('m%md%dh%Hm%Ms%S')))
 
         # caching
         if isinstance(cache, str):
