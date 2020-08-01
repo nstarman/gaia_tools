@@ -5,6 +5,7 @@
 ###############################################################################
 import sys
 import os, os.path
+import errno
 import shutil
 import tempfile
 from ftplib import FTP
@@ -201,6 +202,7 @@ def vizier(cat,filePath,ReadMePath,
     return None
 
 def _download_file(downloadPath,filePath,verbose=False,spider=False):
+    downloadPath = downloadPath.replace(os.sep, '/')  # platform independent download path
     sys.stdout.write('\r'+"Downloading file %s ...\r" \
                          % (os.path.basename(filePath)))
     sys.stdout.flush()
@@ -236,7 +238,7 @@ def _download_file(downloadPath,filePath,verbose=False,spider=False):
                 interrupted= True
             os.remove(tmp_savefilename)
         except OSError as e:
-            if e.errno == os.errno.ENOENT:
+            if e.errno == errno.ENOENT:
                 raise OSError("Automagically downloading catalogs requires the wget program; please install wget and try again...")
             else:
                 raise
